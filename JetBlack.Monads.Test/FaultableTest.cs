@@ -7,26 +7,30 @@ namespace JetBlack.Monads.Test
     public class FaultableTest
     {
         [Test]
-        public void Test()
+        public void TestBind()
         {
             var r1 = Faultable.Return(2)
-                       .Bind(x => x + 2)
-                       .Bind(y => 8 / y);
+                .Bind(x => x + 2)
+                .Bind(y => 8 / y);
             Assert.IsFalse(r1.IsFaulted);
             Assert.AreEqual(2, r1.Value);
 
             var r2 = Faultable.Return(0)
-                       .Bind(x => x + 6 / x)
-                       .Bind(y => y + 7);
+                .Bind(x => x + 6 / x)
+                .Bind(y => y + 7);
             Assert.IsTrue(r2.IsFaulted);
             Assert.IsTrue(r2.Error is DivideByZeroException);
 
             var r3 = Faultable.Return(2)
-                       .Bind(x => x - 2)
-                       .Bind(y => 7 / y);
+                .Bind(x => x - 2)
+                .Bind(y => 7 / y);
             Assert.IsTrue(r3.IsFaulted);
             Assert.IsTrue(r3.Error is DivideByZeroException);
+        }
 
+        [Test]
+        public void TestSelectMany()
+        {
             var r4 = from x in Faultable.Return(2)
                      from y in Faultable.Return(() => 6 / x)
                      from z in Faultable.Return(4)

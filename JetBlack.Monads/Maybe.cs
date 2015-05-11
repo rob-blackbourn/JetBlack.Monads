@@ -9,7 +9,12 @@ namespace JetBlack.Monads
         {
             return value;
         }
-    
+
+        public static Maybe<TResult> Bind<T, TResult>(this Maybe<T> value, Func<T, TResult> apply)
+        {
+            return value.HasValue ? Return(apply(value.Value)) : Maybe<TResult>.Nothing;
+        }
+
         public static Maybe<TResult> Bind<T, TResult>(this Maybe<T> value, Func<T, Maybe<TResult>> apply)
         {
             return value.HasValue ? apply(value.Value) : Maybe<TResult>.Nothing;

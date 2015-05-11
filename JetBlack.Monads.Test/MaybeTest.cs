@@ -71,5 +71,4 @@ namespace JetBlack.Monads.Test
             return dictionary.TryGetValue(key, out value) ? Maybe.Return(value) : Maybe<TValue>.Nothing;
         }
     }
-
 }
