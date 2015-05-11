@@ -36,7 +36,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictionaryExTest.cs" />
     <Compile Include="FaultableTest.cs" />
     <Compile Include="MaybeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

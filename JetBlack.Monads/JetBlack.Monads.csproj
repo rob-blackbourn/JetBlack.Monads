@@ -33,7 +33,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictionaryEx.cs" />
     <Compile Include="Faultable.cs" />
     <Compile Include="FaultableExtensions.cs" />
     <Compile Include="Maybe.cs" />
