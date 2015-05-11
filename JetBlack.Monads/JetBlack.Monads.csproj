@@ -34,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Faultable.cs" />
-    <Compile Include="FaultableExtensions.cs" />
     <Compile Include="Maybe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

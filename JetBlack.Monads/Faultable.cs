@@ -23,6 +23,21 @@ namespace JetBlack.Monads
         {
             return Return(() => func(value));
         }
+
+        public static Faultable<TResult> Bind<T, TResult>(this Faultable<T> value, Func<T, Faultable<TResult>> transform)
+        {
+            return value.IsFaulted ? value.Error : transform(value.Value);
+        }
+
+        public static Faultable<TResult> Bind<T, TResult>(this Faultable<T> value, Func<T, TResult> transform)
+        {
+            return value.Bind(arg => Return(transform, arg));
+        }
+
+        public static Faultable<TResult> SelectMany<T, TIntermediate, TResult>(this Faultable<T> value, Func<T, Faultable<TIntermediate>> transform, Func<T, TIntermediate, TResult> project)
+        {
+            return value.Bind(x => transform(x).Bind(y => Return(project(x, y))));
+        }
     }
 
     public struct Faultable<T> : IEquatable<Faultable<T>>, IEquatable<T>, IDisposable
