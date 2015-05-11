@@ -7,7 +7,7 @@ Some example monads.
 The `Maybe<T>` monad has two states, the value of type `T` or nothing. It can
 be used when chaining a series of methods which may of may not provide a result.
 
-The key to the patter is the `Bind` method which has to following implementation.
+The key to the pattern is the `Bind` method which has to following implementation.
 
 ```cs
     public static Maybe<TResult> Bind<T, TResult>(this Maybe<T> value, Func<T, Maybe<TResult>> apply)
@@ -69,6 +69,17 @@ The implementations of `TryGetValue` are as follows:
         }
     }
 ```
+
+The logic for the propogation of success and failure are factored out, as they
+are the responsibility of the monad.
+
+### Implementation
+
+A number of implementations were experimented with. The version provided here
+satisfies the following design goals.
+
+ 1.  The monad should be a struct as it has few properties and will be frequently created and destroyed.
+ 2.  It should not be possible to create the monad in an invalid state.
 
 ## Faultable
 
