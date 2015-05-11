@@ -80,6 +80,7 @@ satisfies the following design goals.
 
  1.  The monad should be a struct as it has few properties and will be frequently created and destroyed.
  2.  It should not be possible to create the monad in an invalid state.
+ 3.  The `null` value should be considered equivalent to `Maybe<T>.Nothing` when constructing the monad.
 
 ## Faultable
 
