@@ -36,7 +36,6 @@
     <Compile Include="Faultable.cs" />
     <Compile Include="FaultableExtensions.cs" />
     <Compile Include="Maybe.cs" />
-    <Compile Include="MaybeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
