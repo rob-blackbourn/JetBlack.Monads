@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace JetBlack.Monads
 {
@@ -26,13 +25,11 @@ namespace JetBlack.Monads
         }
     }
 
-    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<T>, IDisposable
+    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<T>
     {
         public static readonly Maybe<T> Nothing = new Maybe<T>();
 
         private static readonly bool IsValueType = typeof(T).IsValueType;
-
-        private int _disposed;
 
         private Maybe(T value) : this()
         {
@@ -66,18 +63,6 @@ namespace JetBlack.Monads
         public override int GetHashCode()
         {
             return HasValue ? Value.GetHashCode() : 0;
-        }
-
-        public void Dispose()
-        {
-            if (Interlocked.CompareExchange(ref _disposed, 1, 0) == 0)
-            {
-                if (!HasValue) return;
-
-                var disposable = Value as IDisposable;
-                if (disposable != null)
-                    disposable.Dispose();
-            }
         }
 
         public override string ToString()

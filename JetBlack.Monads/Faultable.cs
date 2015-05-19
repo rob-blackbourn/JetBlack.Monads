@@ -40,7 +40,7 @@ namespace JetBlack.Monads
         }
     }
 
-    public struct Faultable<T> : IEquatable<Faultable<T>>, IEquatable<T>, IDisposable
+    public struct Faultable<T> : IEquatable<Faultable<T>>, IEquatable<T>
     {
         private static readonly bool IsValueType = typeof (T).IsValueType;
 
@@ -80,15 +80,6 @@ namespace JetBlack.Monads
         public override int GetHashCode()
         {
             return IsFaulted ? Error.GetHashCode() : IsValueType || !Equals(Value, default(T)) ? Value.GetHashCode() : 0;
-        }
-
-        public void Dispose()
-        {
-            if (IsFaulted) return;
-
-            var dispoable = Value as IDisposable;
-            if (dispoable != null)
-                dispoable.Dispose();
         }
 
         public override string ToString()
