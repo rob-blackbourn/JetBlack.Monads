@@ -36,8 +36,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="FaultableTest.cs" />
     <Compile Include="MaybeTest.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

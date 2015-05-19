@@ -19,6 +19,8 @@ The key to the pattern is the `Bind` method which has to following implementatio
 If the supplied parameter has a value the function is applied, otherwise the
 Nothing value is propogated.
 
+### Simple Example
+
 In the test assembly we can see an implementation of a dictionary search:
 
 ```cs
@@ -72,6 +74,40 @@ The implementations of `TryGetValue` are as follows:
 
 The logic for the propogation of success and failure are factored out, as they
 are the responsibility of the monad.
+
+### Heterogeneous Example
+
+In the above example the result at each stage was the same type; a `string`. In this example
+we use a class structure where the first type is a `Person`, but the final result is a `Maybe<Address>`.
+
+```cs
+    var people = new[]
+    {
+        new Person("Tom", "tom@fictional.com", new DateTime(1952, 3, 28),
+            new List<Address>
+            {
+                new Address("1 High Street", "Pink Town", "786123", "United States"),
+                new Address("23 Long Acre", "Little Grove", "786123", "United States")
+            }),
+        new Person("Dick", "dick@toolman.com", new DateTime(1971, 11, 1),
+            new List<Address>
+            {
+                new Address("42 Blossom Hill", "Green Town", "566722", "Canada"),
+                new Address("921 Long Street", "Sleepy Hollow", "877766", "Canada")
+            }),
+        new Person("Harry", "harry@localfarmers.com", new DateTime(2001, 1, 3),
+            new List<Address>
+            {
+                new Address("12 Ocean Rise", "Blue Town", "712812", "United States"),
+                new Address("1220 The Mount", "Moon Valley", "927612", "United States")
+            })
+    }.ToDictionary(x => x.Name, y => y);
+
+    Assert.AreEqual(typeof (Address), people.TryGetValue("Harry").Bind(x => x.Addresses.FirstOrDefault(y => y.Country == "United States")).Value.GetType());
+    Assert.IsFalse(people.TryGetValue("Nancy").Bind(x => x.Addresses.FirstOrDefault(y => y.Country == "United States")).HasValue);
+    Assert.IsFalse(people.TryGetValue("Harry").Bind(x => x.Addresses.FirstOrDefault(y => y.Country == "Canada")).HasValue);
+}
+```
 
 ### Implementation
 

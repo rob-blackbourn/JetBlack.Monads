@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime;
 using NUnit.Framework;
 
 namespace JetBlack.Monads.Test
@@ -51,24 +55,35 @@ namespace JetBlack.Monads.Test
             Assert.IsFalse(dictionary.TryGetValue("Berkshire").TryGetValue("Picadilly").HasValue);
             Assert.IsFalse(dictionary.TryGetValue("London").TryGetValue("Reading").HasValue);
         }
-    }
 
-    public static class DictionaryExtensions
-    {
-        public static Maybe<TValue> TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Maybe<TKey> key)
+        [Test]
+        public void TestHeterogenious()
         {
-            return Maybe.Return(dictionary).TryGetValue(key);
-        }
+            var people = new[]
+            {
+                new Person("Tom", "tom@fictional.com", new DateTime(1952, 3, 28),
+                    new List<Address>
+                    {
+                        new Address("1 High Street", "Pink Town", "786123", "United States"),
+                        new Address("23 Long Acre", "Little Grove", "786123", "United States")
+                    }),
+                new Person("Dick", "dick@toolman.com", new DateTime(1971, 11, 1),
+                    new List<Address>
+                    {
+                        new Address("42 Blossom Hill", "Green Town", "566722", "Canada"),
+                        new Address("921 Long Street", "Sleepy Hollow", "877766", "Canada")
+                    }),
+                new Person("Harry", "harry@localfarmers.com", new DateTime(2001, 1, 3),
+                    new List<Address>
+                    {
+                        new Address("12 Ocean Rise", "Blue Town", "712812", "United States"),
+                        new Address("1220 The Mount", "Moon Valley", "927612", "United States")
+                    })
+            }.ToDictionary(x => x.Name, y => y);
 
-        public static Maybe<TValue> TryGetValue<TKey, TValue>(this Maybe<IDictionary<TKey, TValue>> dictionary, Maybe<TKey> key)
-        {
-            return dictionary.Bind(x => key.Bind(x.TryGetValue));
-        }
-
-        private static Maybe<TValue> TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-        {
-            TValue value;
-            return dictionary.TryGetValue(key, out value) ? Maybe.Return(value) : Maybe<TValue>.Nothing;
+            Assert.AreEqual(typeof (Address), people.TryGetValue("Harry").Bind(x => x.Addresses.FirstOrDefault(y => y.Country == "United States")).Value.GetType());
+            Assert.IsFalse(people.TryGetValue("Nancy").Bind(x => x.Addresses.FirstOrDefault(y => y.Country == "United States")).HasValue);
+            Assert.IsFalse(people.TryGetValue("Harry").Bind(x => x.Addresses.FirstOrDefault(y => y.Country == "Canada")).HasValue);
         }
     }
 }
