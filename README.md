@@ -7,7 +7,9 @@ Some example monads with practical applications.
 ## Maybe
 
 The `Maybe<T>` monad has two states, the value of type `T` or nothing. It can
-be used when chaining a series of methods which may of may not provide a result.
+be used when chaining a series of methods which may of may not provide a result. The
+type `Maybe<T>` is said to "amplify" the type `T`, as it gives the type more
+functionality. In this case to determine it's existance.
 
 The key to the pattern is the `Bind` method which has to following implementation.
 
