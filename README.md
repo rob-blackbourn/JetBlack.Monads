@@ -1,6 +1,8 @@
 # JetBlack.Monads
 
-Some example monads.
+## Overview
+
+Some example monads with practical applications.
 
 ## Maybe
 
