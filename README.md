@@ -14,10 +14,18 @@ functionality. In this case to determine it's existance.
 The key to the pattern is the `Bind` method which has the following implementation.
 
 ```cs
-    public static Maybe<TResult> Bind<T, TResult>(this Maybe<T> value, Func<T, Maybe<TResult>> apply)
+    public struct Maybe<T>
     {
-        return value.HasValue ? apply(value.Value) : Maybe<TResult>.Nothing;
+        ...
+
+        public static Maybe<TResult> Bind<T, TResult>(this Maybe<T> value, Func<T, Maybe<TResult>> apply)
+        {
+            return value.HasValue ? apply(value.Value) : Maybe<TResult>.Nothing;
+        }
+
+        ...
     }
+
 ```
 
 If the supplied parameter has a value the function is applied, otherwise the
@@ -39,7 +47,7 @@ Another key feature of a monad is the `Return` function which returns a monad am
     }
 ```
 
-And a helper extension:
+And a helper extension using the implicit cast.
 
 ```cs
     public static class Maybe
