@@ -11,7 +11,7 @@ be used when chaining a series of methods which may or may not provide a result.
 type `Maybe<T>` is said to "amplify" the type `T`, as it gives the type more
 functionality. In this case to determine it's existance.
 
-The key to the pattern is the `Bind` method which has to following implementation.
+The key to the pattern is the `Bind` method which has the following implementation.
 
 ```cs
     public static Maybe<TResult> Bind<T, TResult>(this Maybe<T> value, Func<T, Maybe<TResult>> apply)
