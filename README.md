@@ -21,6 +21,38 @@ The key to the pattern is the `Bind` method which has to following implementatio
 If the supplied parameter has a value the function is applied, otherwise the
 Nothing value is propogated.
 
+Another key feature of a monad is the `Return` function which returns a monad amplifying the appropriate type. This is achieved with an implicit operator:
+
+```cs
+    public struct Maybe<T>
+    {
+        ...
+
+        public static implicit operator Maybe<T>(T value)
+        {
+            return IsValueType || !Equals(value, default(T)) ? new Maybe<T>(value) : Nothing;
+        }
+
+        ...
+    }
+```
+
+And a helper extension:
+
+```cs
+    public static class Maybe
+    {
+        ...
+
+        public static Maybe<T> Return<T>(this T value)
+        {
+            return value;
+        }
+
+        ...
+    }
+```
+
 ### Simple Example
 
 In the test assembly we can see an implementation of a dictionary search:
