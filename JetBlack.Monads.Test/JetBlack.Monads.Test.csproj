@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="DictionaryExtensions.cs" />
+    <Compile Include="EitherTest.cs" />
     <Compile Include="FaultableTest.cs" />
     <Compile Include="MaybeTest.cs" />
     <Compile Include="Person.cs" />
