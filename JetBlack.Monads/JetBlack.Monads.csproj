@@ -33,9 +33,18 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncHandler.cs" />
     <Compile Include="Either.cs" />
+    <Compile Include="ExceptionEventArgs.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Faultable.cs" />
+    <Compile Include="Handlers.cs" />
+    <Compile Include="IPendingPromise.cs" />
+    <Compile Include="IPromise.cs" />
+    <Compile Include="IRejectable.cs" />
     <Compile Include="Maybe.cs" />
+    <Compile Include="Promise.cs" />
+    <Compile Include="PromiseState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
