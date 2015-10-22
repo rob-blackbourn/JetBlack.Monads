@@ -42,6 +42,8 @@
     <Compile Include="FaultableTest.cs" />
     <Compile Include="MaybeTest.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="PromiseNoArgsTest.cs" />
+    <Compile Include="PromiseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
