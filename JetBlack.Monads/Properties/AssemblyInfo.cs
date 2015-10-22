@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("JetBlack.Monads")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Some monad implementations")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JetBlack")]
 [assembly: AssemblyProduct("JetBlack.Monads")]
