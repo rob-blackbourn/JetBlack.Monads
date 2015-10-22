@@ -38,7 +38,7 @@ namespace JetBlack.Monads
         public void Reject(Exception error)
         {
             if (State != PromiseState.Pending)
-                throw new InvalidOperationException("Can't reject a promis which isn't pending");
+                throw new InvalidOperationException("Can't reject a promise which isn't pending");
 
             _error = error;
             State = PromiseState.Rejected;
@@ -283,8 +283,7 @@ namespace JetBlack.Monads
     {
         private readonly Handlers<T> _handlers = new Handlers<T>();
 
-        private Exception _error;
-        private T _value;
+        private Either<Exception, T> _errorOrValue;
 
         public PromiseState State { get; private set; }
 
@@ -302,9 +301,9 @@ namespace JetBlack.Monads
         public void Resolve(T value)
         {
             if (State != PromiseState.Pending)
-                throw new ApplicationException("Can't resolve a promise that isn't pending.");
+                throw new InvalidOperationException("Can't resolve a promise that isn't pending.");
 
-            _value = value;
+            _errorOrValue = Either.Right<Exception,T>(value);
             State = PromiseState.Resolved;
             _handlers.Resolve(value);
         }
@@ -312,9 +311,9 @@ namespace JetBlack.Monads
         public void Reject(Exception error)
         {
             if (State != PromiseState.Pending)
-                throw new ApplicationException("Can't reject a promise that isn't pending.");
+                throw new InvalidOperationException("Can't reject a promise that isn't pending.");
 
-            _error = error;
+            _errorOrValue = Either.Left<Exception, T>(error);
             State = PromiseState.Rejected;
             _handlers.Reject(error);
         }
@@ -429,10 +428,10 @@ namespace JetBlack.Monads
                     _handlers.AddRejectors(onRejected, rejectable);
                     break;
                 case PromiseState.Resolved:
-                    onFulfilled.TryCatch(_value, rejectable.Reject);
+                    onFulfilled.TryCatch(_errorOrValue.Right, rejectable.Reject);
                     break;
                 case PromiseState.Rejected:
-                    onRejected.TryCatch(_error, rejectable.Reject);
+                    onRejected.TryCatch(_errorOrValue.Left, rejectable.Reject);
                     break;
             }
 
@@ -543,12 +542,12 @@ namespace JetBlack.Monads
             switch (State)
             {
                 case PromiseState.Resolved:
-                    s.Append(", ResolvedValue=").Append(_value);
+                    s.Append(", ResolvedValue=").Append(_errorOrValue.Right);
                     break;
                 case PromiseState.Rejected:
-                    s.Append(", Exception=").Append(_error.Message);
-                    if (!string.IsNullOrWhiteSpace(_error.StackTrace))
-                        s.Append(": ").Append(_error.StackTrace);
+                    s.Append(", Exception=").Append(_errorOrValue.Left.Message);
+                    if (!string.IsNullOrWhiteSpace(_errorOrValue.Left.StackTrace))
+                        s.Append(": ").Append(_errorOrValue.Left.StackTrace);
                     break;
             }
             return s.ToString();
